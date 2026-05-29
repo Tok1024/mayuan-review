@@ -203,31 +203,6 @@ export function App() {
         </aside>
 
         <section className="content">
-          <div className="summaryBand">
-            <div>
-              <p className="eyebrow">{randomDeck ? "随机复习" : selectedSection === "all" ? "全部知识" : getSectionTitle(selectedSection)}</p>
-              <h2>{randomDeck ? `今日过卡 ${visibleCards.length} 张` : "一张一张背，过卡更专注"}</h2>
-              <p>先看正面主动回忆，再翻面核对标准表达；标记“不会 / 模糊 / 掌握”后自动进入下一张。</p>
-            </div>
-            <div className="progressCard">
-              <div className="progressTop">
-                <span>{achievement}</span>
-                <strong>{stats.masteryRate}%</strong>
-              </div>
-              <div className="progressTrack">
-                <div style={{ width: `${stats.masteryRate}%` }} />
-              </div>
-              <small>{masteredCount}/{stats.total} 已掌握</small>
-            </div>
-          </div>
-
-          <div className="metricGrid">
-            <Metric label="不会" value={stats.counts.hard} tone="red" />
-            <Metric label="模糊" value={stats.counts.ok} tone="amber" />
-            <Metric label="掌握" value={stats.counts.mastered} tone="green" />
-            <Metric label="当前显示" value={visibleCards.length} tone="blue" />
-          </div>
-
           {randomDeck && (
             <div className="sessionBanner">
               <Sparkles size={18} />
@@ -285,6 +260,31 @@ export function App() {
                 )}
               </>
             )}
+          </div>
+
+          <div className="metricGrid">
+            <Metric label="不会" value={stats.counts.hard} tone="red" />
+            <Metric label="模糊" value={stats.counts.ok} tone="amber" />
+            <Metric label="掌握" value={stats.counts.mastered} tone="green" />
+            <Metric label="当前卡组" value={visibleCards.length} tone="blue" />
+          </div>
+
+          <div className="summaryBand">
+            <div>
+              <p className="eyebrow">{randomDeck ? "随机复习" : selectedSection === "all" ? "全部知识" : getSectionTitle(selectedSection)}</p>
+              <h2>{randomDeck ? `今日过卡 ${visibleCards.length} 张` : "一张一张背，过卡更专注"}</h2>
+              <p>先看正面主动回忆，再翻面核对标准表达；标记“不会 / 模糊 / 掌握”后自动进入下一张。</p>
+            </div>
+            <div className="progressCard">
+              <div className="progressTop">
+                <span>{achievement}</span>
+                <strong>{stats.masteryRate}%</strong>
+              </div>
+              <div className="progressTrack">
+                <div style={{ width: `${stats.masteryRate}%` }} />
+              </div>
+              <small>{masteredCount}/{stats.total} 已掌握</small>
+            </div>
           </div>
         </section>
       </main>
