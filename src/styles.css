@@ -419,7 +419,7 @@ button {
   grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr) minmax(7rem, 10rem);
   align-items: center;
   gap: 0.85rem;
-  width: min(54rem, 100%);
+  width: min(78rem, 100%);
   margin: 0 auto;
 }
 
@@ -497,7 +497,7 @@ button {
 .flashCard {
   display: flex;
   flex-direction: column;
-  width: min(54rem, 100%);
+  width: min(78rem, 100%);
   min-height: 27rem;
   border-radius: 1.2rem;
   overflow: hidden;
