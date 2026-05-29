@@ -1,818 +1,253 @@
-export type ChapterId = "intro" | "c1" | "c2" | "c3" | "c4" | "c5";
 export type CardStatus = "unknown" | "hard" | "ok" | "mastered";
-export type Importance = "必背" | "高频" | "理解";
-export type ExamType = "名词解释" | "材料分析" | "辨析题" | "论述题";
 
-export interface KnowledgeNode {
+export type SectionId = 0 | 1 | 2 | 3;
+
+export interface StudySection {
+  id: SectionId;
   title: string;
-  points: string[];
-  examFocus: string;
+  subtitle: string;
+  accent: "blue" | "amber" | "violet" | "rose";
 }
 
-export interface Chapter {
-  id: ChapterId;
-  order: number;
+export interface PrincipleCard {
+  id: string;
+  type: "principle";
+  section: SectionId;
   title: string;
-  shortTitle: string;
-  role: string;
-  sections: KnowledgeNode[];
+  scope: string;
+  content: string;
+  method: string;
 }
 
-export interface Flashcard {
+export interface TermCard {
   id: string;
-  term: string;
-  answer: string;
-  keywords: string[];
-  memoryHook?: string;
-  logicHint?: string;
-  chapterId: ChapterId;
-  importance: Importance;
-  examTypes: ExamType[];
-  sourceHint: string;
-}
-
-export interface PastPaper {
-  id: string;
+  type: "term";
+  section: 3;
+  category: string;
   title: string;
-  terms: string[];
-  analysis: string[];
-  essay: string[];
-  relatedCardIds: string[];
+  content: string;
 }
 
-export interface ConceptLink {
-  id: string;
-  from: string;
-  relation: string;
-  to: string;
-  explanation: string;
-  cardIds: string[];
-}
+export type StudyCard = PrincipleCard | TermCard;
 
-export interface MemoryRoute {
-  id: string;
-  title: string;
-  chapterIds: ChapterId[];
-  scenario: string;
-  steps: string[];
-  cardIds: string[];
-}
+export const sections: StudySection[] = [
+  { id: 0, title: "唯物论部分", subtitle: "物质、意识、规律、自然", accent: "blue" },
+  { id: 1, title: "辩证法部分", subtitle: "联系、发展、矛盾", accent: "amber" },
+  { id: 2, title: "认识论部分", subtitle: "实践、认识、真理、创新", accent: "violet" },
+  { id: 3, title: "名词解释", subtitle: "辩证法、唯物史观、政经核心概念", accent: "rose" }
+];
 
-export interface AnswerPattern {
-  id: string;
-  title: string;
-  useFor: string;
-  structure: string[];
-  exampleCards: string[];
-}
-
-export const chapters: Chapter[] = [
+export const principles: PrincipleCard[] = [
   {
-    id: "intro",
-    order: 0,
-    title: "导论",
-    shortTitle: "导论",
-    role: "先建立总框架，回答“什么是马克思主义、为什么学、怎么用”。",
-    sections: [
-      {
-        title: "什么是马克思主义",
-        points: ["科学理论体系", "三个基本组成部分", "基本立场、观点、方法"],
-        examFocus: "可作为论述题开头，尤其适合“如何践行马克思主义”。"
-      },
-      {
-        title: "创立、发展与基本特征",
-        points: ["直接理论来源", "科学性", "革命性", "实践性", "人民性", "发展性"],
-        examFocus: "背关键词，不宜孤立死记，常用于综合题铺垫。"
-      },
-      {
-        title: "当代价值与学习方法",
-        points: ["观察时代", "把握规律", "指导实践", "一切从实际出发"],
-        examFocus: "联系青年使命、专业学习、总师育人文化。"
-      }
-    ]
+    id: "p1",
+    type: "principle",
+    section: 0,
+    title: "主观能动性与客观规律性的关系",
+    scope: "主要适用环境治理与科技攻关、大型工程中，人类在尊重规律的前提下，取得了什么样的成果。",
+    content:
+      "正确认识和把握物质与意识的辩证关系，必须处理好主观能动性与客观规律性之间的关系。首先，尊重客观规律是正确发挥主观能动性的前提。人们只有在认识和掌握客观规律的前提下，才能达到认识世界与改造世界的目的。其次，只有充分发挥主观能动性，才能正确认识规律和利用规律，并按照客观规律办事，以满足人类自身的需要。",
+    method: "要求我们想问题、办事情，既要尊重客观规律，按规律办事，又要充分发挥主观能动性，把尊重客观规律和发挥主观能动性有机地结合起来。"
   },
   {
-    id: "c1",
-    order: 1,
-    title: "第一章 世界的物质性及发展规律",
-    shortTitle: "第一章",
-    role: "哲学大题核心章，重点是物质观、辩证法、矛盾规律和发展观。",
-    sections: [
-      {
-        title: "世界的多样性与物质统一性",
-        points: ["物质", "意识", "运动与静止", "主观能动性", "世界物质统一性"],
-        examFocus: "可应对“物质与意识关系”“人与自然关系”等材料题。"
-      },
-      {
-        title: "普遍联系和变化发展",
-        points: ["联系", "发展", "对立统一规律", "量变质变", "否定之否定"],
-        examFocus: "矛盾规律是常考名词和材料分析万能工具。"
-      },
-      {
-        title: "唯物辩证法的方法论",
-        points: ["整体性思维", "辩证思维", "历史思维", "创新思维"],
-        examFocus: "答题时落到“坚持全面、联系、发展地看问题”。"
-      }
-    ]
+    id: "p2",
+    type: "principle",
+    section: 0,
+    title: "正确发挥主观能动性的条件与前提",
+    scope: "在环境治理、科技攻关、疫情防控、大型工程中，我们如何才能取得成功，或成功的原因是什么。",
+    content:
+      "正确发挥主观能动性，必须做到：第一，从实际出发，努力认识和把握事物的发展规律，这是正确发挥主观能动性的前提。第二，实践是发挥人的主观能动性的基本途径。第三，主观能动性的发挥，还依赖于一定的物质条件和物质手段。",
+    method: "从实际出发，在实践中认识和利用规律，并准备必要的物质条件和手段。"
   },
   {
-    id: "c2",
-    order: 2,
-    title: "第二章 实践与认识及其发展规律",
-    shortTitle: "第二章",
-    role: "认识论高频章，适合材料题和辨析题。",
-    sections: [
-      {
-        title: "实践与认识",
-        points: ["实践", "认识", "主体客体中介", "感性认识与理性认识"],
-        examFocus: "重点背实践定义、实践和认识的辩证关系。"
-      },
-      {
-        title: "真理与价值",
-        points: ["真理", "绝对真理与相对真理", "实践是检验真理的唯一标准", "价值"],
-        examFocus: "常用于分析不同认识、判断标准、价值选择。"
-      },
-      {
-        title: "认识世界和改造世界",
-        points: ["一切从实际出发", "实事求是", "理论创新", "实践创新"],
-        examFocus: "适合联系现实材料，结尾强调守正创新。"
-      }
-    ]
+    id: "p3",
+    type: "principle",
+    section: 0,
+    title: "意识活动的能动反作用",
+    scope: "在疫情防控、科技攻关、经济发展、环境治理、大型工程中，工作人员如何发挥精神、意识的作用。",
+    content:
+      "意识是客观世界在人脑中的主观映像，意识对物质具有能动反作用，即人所特有的积极认识世界、改造世界的能力与活动。意识活动具有目的性、计划性和创造性，并可以指导实践改造客观世界。人类意识活动的发挥，要以尊重客观规律为前提。",
+    method: "重视正确意识、科学理论和精神力量对实践的指导作用，同时坚持以客观规律为前提。"
   },
   {
-    id: "c3",
-    order: 3,
-    title: "第三章 人类社会及其发展规律",
-    shortTitle: "第三章",
-    role: "历史唯物主义核心章，社会基本矛盾、人民群众、生产力生产关系都很关键。",
-    sections: [
-      {
-        title: "人类社会的存在与发展",
-        points: ["社会存在与社会意识", "生产方式", "生产力", "生产关系", "经济基础", "上层建筑"],
-        examFocus: "生产关系、上层建筑已在往年题中出现，必须熟。"
-      },
-      {
-        title: "社会历史发展的动力",
-        points: ["社会基本矛盾", "阶级斗争", "社会革命", "改革", "科学技术"],
-        examFocus: "理解“生产力决定生产关系、经济基础决定上层建筑”。"
-      },
-      {
-        title: "人民群众在历史发展中的作用",
-        points: ["人民群众", "群众观点", "个人历史作用", "群众路线"],
-        examFocus: "论述题可联系青年、专业和社会实践。"
-      }
-    ]
+    id: "p4",
+    type: "principle",
+    section: 0,
+    title: "正确处理人与自然的关系",
+    scope: "为什么必须重视保护自然资源和生态环境？环境治理中该如何做？如何看待当今的环境污染问题？",
+    content:
+      "自然地理环境是人类社会生存和发展永恒的、必要的条件，是人们生活生产的自然基础。离开了一定的自然条件，人类无法进行生产生活。合理利用自然资源，保护生态环境，是社会得以正常发展的必要条件。\n当今世界出现的生态、环境、人口、资源等全球危机问题，并不单纯是自然系统内平衡关系的严重破坏，实际上也是人与自然关系的严重失衡。马克思认为，应当合理地调节人与自然之间的物质变换，在最无愧于和最适合人类本性的条件下进行这种物质变换。人与自然是生命共同体。",
+    method: "人类必须尊重自然、顺应自然、保护自然。人类只有遵循自然规律才能有效防止在开发利用自然上走弯路。"
   },
   {
-    id: "c4",
-    order: 4,
-    title: "第四章 资本主义的本质及规律",
-    shortTitle: "第四章",
-    role: "政治经济学名词解释重点章，注意商品、价值、剩余价值、经济危机。",
-    sections: [
-      {
-        title: "商品经济和价值规律",
-        points: ["商品", "使用价值与价值", "具体劳动与抽象劳动", "社会必要劳动时间", "价值规律"],
-        examFocus: "社会必要劳动时间和价值规律是高频名词。"
-      },
-      {
-        title: "资本主义经济制度",
-        points: ["劳动力成为商品", "剩余价值", "不变资本与可变资本", "资本积累", "经济危机"],
-        examFocus: "定义要短、准、带关键词。"
-      },
-      {
-        title: "资本主义上层建筑",
-        points: ["政治制度", "政党制度", "意识形态", "本质"],
-        examFocus: "一般作为理解背景，优先级低于经济制度名词。"
-      }
-    ]
+    id: "p5",
+    type: "principle",
+    section: 1,
+    title: "事物联系的普遍性原理",
+    scope: "A 与 B 相联系，B 与 C 相联系，ABC 同处于一个统一整体之中。",
+    content:
+      "事物是普遍联系的，联系是指事物内部各要素之间和事物之间相互影响、相互制约和相互作用的关系。联系具有客观性，事物的联系是事物本身所固有的，不以人的意志为转移；联系具有普遍性，任何事物都同其他事物处于一定的相互联系之中，整个世界是一个相互联系的统一整体。",
+    method: "要求人们善于分析事物的具体联系，确立整体性、系统性、开放性观念，从动态中考察事物的普遍联系。"
   },
   {
-    id: "c5",
-    order: 5,
-    title: "第五章 资本主义的发展及其趋势",
-    shortTitle: "第五章",
-    role: "垄断资本主义名词解释重点章，往年出现过垄断价格。",
-    sections: [
-      {
-        title: "垄断资本主义的形成与发展",
-        points: ["垄断", "金融资本", "金融寡头", "垄断利润", "垄断价格", "国家垄断资本主义"],
-        examFocus: "垄断价格、金融资本、金融寡头适合六选四名词解释。"
-      },
-      {
-        title: "当代资本主义的新变化",
-        points: ["国家垄断资本主义", "法人资本所有制", "新变化的实质"],
-        examFocus: "理解性掌握，名词解释为主。"
-      },
-      {
-        title: "资本主义的历史地位和发展趋势",
-        points: ["历史进步性", "基本矛盾", "被社会主义代替的必然性"],
-        examFocus: "可作为论述政治经济学部分的结尾。"
-      }
-    ]
+    id: "p6",
+    type: "principle",
+    section: 1,
+    title: "事物发展的原理",
+    scope: "人们在科技攻关、环境治理、社会创新、经济发展、大型工程中取得成就，说明了什么。",
+    content: "发展是前进上升的运动，发展的实质是新事物的产生和旧事物的灭亡。任何事物都不是一成不变的，都有其产生、发展和灭亡的过程。",
+    method: "用发展的眼光看问题，支持新事物成长，反对静止、僵化地看待问题。"
+  },
+  {
+    id: "p7",
+    type: "principle",
+    section: 1,
+    title: "矛盾普遍性与特殊性",
+    scope: "马克思主义中国化时代化、普遍原理与具体实际相结合。",
+    content:
+      "任何事物的矛盾，都是矛盾普遍性与特殊性的辩证统一。矛盾的普遍性是指，矛盾存在于一切事物之中，存在于一切事物发展过程的始终。矛盾的特殊性是指，各个具体事物的矛盾及矛盾的每一个方面在发展的不同阶段各有其特点。矛盾的普遍性即矛盾的共性，矛盾的特殊性即矛盾的个性，共性寓于个性之中，个性离不开共性。",
+    method: "这一原理是马克思主义普遍真理同各国具体实践相结合的哲学基础，也是建设中国特色社会主义的哲学基础。"
+  },
+  {
+    id: "p8",
+    type: "principle",
+    section: 1,
+    title: "矛盾同一性与斗争性",
+    scope: "题干出现危与机、成功与失败、好与坏、有利与不利、否极泰来、福祸相依等，可用此原理。",
+    content:
+      "矛盾是反映事物内部和事物之间对立统一关系的哲学范畴，同一性和斗争性是矛盾的两种基本属性。同一性是指矛盾双方相互依存、相互贯通的性质和趋势，斗争性是指矛盾双方相互排斥、相互分离的性质和趋势。矛盾同一性包含两个方面：一是矛盾着的对立面相互依存，互为存在的前提，并共处于一个统一体中；二是矛盾着的对立面之间相互贯通，在一定条件下相互转化。",
+    method: "要求我们看到事物之间对立统一的关系，分析解决矛盾时，必须在对立中把握同一，在同一中把握对立，促进事物转化。"
+  },
+  {
+    id: "p9",
+    type: "principle",
+    section: 1,
+    title: "矛盾的特殊性",
+    scope: "题干出现精准施策、对症下药、因地制宜、一人一方、分清主次、具体问题具体分析，可用此原理。",
+    content: "矛盾具有特殊性，矛盾的特殊性是指具体事物在其运动中的矛盾及每一矛盾的各个方面都有其特点。矛盾的特殊性规定了事物的不同性质。",
+    method: "只有分析事物矛盾的特殊性，才能认清事物的本质，才能做到具体问题具体分析。"
+  },
+  {
+    id: "p10",
+    type: "principle",
+    section: 1,
+    title: "两点论与重点论",
+    scope: "材料强调重中之重、关键环节、重点环节、中心环节、牛鼻子时，可用此原理。",
+    content:
+      "事物是由多种矛盾构成的。主要矛盾是矛盾体系中处于支配地位、对事物发展起决定作用的矛盾。次要矛盾是矛盾体系中处于从属地位、对事物发展起次要作用的矛盾。在每一对矛盾中又有矛盾的主要方面与矛盾的次要方面，矛盾的性质主要是由矛盾的主要方面决定的。",
+    method: "在实际工作中，要坚持两点论与重点论的统一。看问题既要全面，又要抓住重点。"
+  },
+  {
+    id: "p11",
+    type: "principle",
+    section: 2,
+    title: "实践的真理尺度与价值尺度的辩证统一关系",
+    scope: "主要适用环境治理、科技攻关、大型工程中，人类在尊重自然规律或科学发展规律的前提下取得成果。",
+    content:
+      "人们的实践活动总是受着真理尺度和价值尺度的制约。实践的真理尺度是指在实践中人们必须遵循正确反映客观事物本质和规律的真理。实践的价值尺度是指在实践中人们都是按照自己的尺度和需要去认识世界和改造世界。任何实践活动都是在这两种尺度的共同制约下进行的，任何成功的实践都是真理尺度和价值尺度的统一。一方面，价值尺度必须以真理为前提；另一方面，人类自身需要的内在尺度，推动着人们不断发现新的真理。",
+    method: "把尊重客观规律与满足人民需要统一起来，以真理性保证价值目标的实现。"
+  },
+  {
+    id: "p12",
+    type: "principle",
+    section: 2,
+    title: "真理绝对性与相对性",
+    scope: "为什么必须以科学态度对待马克思主义，为什么必须推动马克思主义中国化时代化。",
+    content:
+      "任何真理都是绝对性与相对性的统一，二者相互联系、不可分割。真理的绝对性是指真理主客观统一的确定性与发展的无限性。真理的相对性是指人们在一定条件下对客观事物及其规律的正确认识总是有限度的、不完善的。真理是发展的，任何真理都处于由相对性向绝对性转化的过程中。",
+    method: "承认真理的绝对性与相对性的辩证统一，就必须以科学态度对待一切真理，既要反对绝对主义，又要反对相对主义。"
+  },
+  {
+    id: "p13",
+    type: "principle",
+    section: 2,
+    title: "认识过程中非理性因素的重要性",
+    scope: "工作人员如何发挥顽强意志、必胜信念、不屈精神。",
+    content:
+      "在认识的辩证运动中，我们既要注重理性因素的作用，同时也不可忽视非理性因素的重要作用。非理性因素主要是指认识主体的情感和意志。非理性因素对于人的认识能力和认识活动具有激活、驱动和控制作用。",
+    method: "要求我们在实践活动中，必须重视非理性因素的作用。"
+  },
+  {
+    id: "p14",
+    type: "principle",
+    section: 2,
+    title: "认识活动的反复性、无限性",
+    scope: "我们对某个事物、规律、真理的认识，经过反复实践而不断发展。",
+    content:
+      "实践决定认识，实践是认识的来源，是认识发展的动力，是检验认识是否正确的唯一标准，是认识的目的。从实践到认识、从认识到实践，实践、认识、再实践、再认识，认识运动不断反复和无限发展，这是人类认识运动的辩证发展过程，也是人类认识运动的基本规律。真理是一个发展过程，既是绝对的，又是相对的。",
+    method: "要求我们在实践的基础上，不断推动认识的发展。"
+  },
+  {
+    id: "p15",
+    type: "principle",
+    section: 2,
+    title: "感性认识与理性认识的辩证关系",
+    scope: "起初认识比较浅显，后来通过实践和思考推动认识深化。",
+    content:
+      "感性认识和理性认识是人对客观世界的两种不同水平的反映形式，也是认识过程的两个不同阶段。感性认识是认识的初级阶段，具有直接性、具体性特点。理性认识是认识的高级阶段，具有间接性、抽象性特点。感性认识与理性认识是辩证统一的关系：感性认识有待于发展和深化为理性认识；理性认识依赖于感性认识；感性认识和理性认识相互渗透、相互包含。",
+    method: "割裂二者关系就会走向唯理论或经验论，在实际工作中就会犯教条主义或经验主义错误。"
+  },
+  {
+    id: "p16",
+    type: "principle",
+    section: 2,
+    title: "感性认识上升为理性认识的条件",
+    scope: "推动人们对于某事物、某规律的认识发展，我们该如何做。",
+    content:
+      "认识的过程首先是从实践到认识的过程，这个过程主要表现为在实践基础上，认识活动由感性认识能动地飞跃到理性认识。人们要正确认识事物，完成从感性认识向理性认识的飞跃，必须做到：第一，勇于实践，深入调查，获取十分丰富和合乎实际的感性材料；第二，必须经过理性思考的作用，将丰富的感性材料加工制作，去粗取精、去伪存真、由此及彼、由表及里。",
+    method: "既要深入实践获取材料，又要进行理性加工，把经验提升为规律性认识。"
+  },
+  {
+    id: "p17",
+    type: "principle",
+    section: 2,
+    title: "认识活动的目的",
+    scope: "我们积累了创新思维、理论认识、工作经验，但必须把它用到实处的原因。",
+    content:
+      "辩证唯物主义认为，实践是认识的目的。认识活动的目的并不在于认识活动本身，而在于更好地改造客体，更有效地指导实践。实践是认识的起点，也是认识的归宿，认识世界的目的是改造世界。",
+    method: "把认识成果回到实践中检验、运用和发展。"
+  },
+  {
+    id: "p18",
+    type: "principle",
+    section: 2,
+    title: "实践创新与理论创新",
+    scope: "为什么要推动马克思主义理论的发展？为什么要重视创新？",
+    content:
+      "人类认识世界、改造世界的过程，是一个包含创新的发展过程，创新是社会发展的不竭动力。创新主要包括实践创新和理论创新两个方面，其中，实践创新为理论创新提供不竭动力，而理论创新为实践创新提供科学的行动指南，我们要努力实现实践创新与理论创新的良性互动。",
+    method: "要求我们提高创新性思维，善于开发和运用创新性能力。"
   }
 ];
 
-export const flashcards: Flashcard[] = [
-  {
-    id: "marxism",
-    term: "马克思主义",
-    answer: "马克思主义是由马克思和恩格斯创立并为后继者不断发展的科学理论体系，是关于自然、社会和人类思维发展一般规律的学说，是关于无产阶级解放、全人类解放和每个人自由而全面发展的学说。",
-    keywords: ["科学理论体系", "一般规律", "无产阶级解放", "行动指南"],
-    logicHint: "先抓“理论体系”这个上位概念，再补三个组成部分和最终目标。导论里它是总标题，后面所有章节都在展开它的立场、观点和方法。",
-    chapterId: "intro",
-    importance: "高频",
-    examTypes: ["名词解释", "论述题"],
-    sourceHint: "名词解释 PDF、教材导论"
-  },
-  {
-    id: "basic-features",
-    term: "马克思主义的基本特征",
-    answer: "马克思主义具有科学性、革命性、实践性、人民性和发展性。科学性体现为正确反映客观规律，革命性体现为彻底批判精神和鲜明无产阶级立场，实践性体现为从实践中来并指导实践。",
-    keywords: ["科学性", "革命性", "实践性", "人民性", "发展性"],
-    chapterId: "intro",
-    importance: "理解",
-    examTypes: ["论述题"],
-    sourceHint: "重点笔记、教材导论"
-  },
-  {
-    id: "matter",
-    term: "物质",
-    answer: "物质是标志客观实在的哲学范畴，这种客观实在不依赖于人的意识而存在，能够为人的意识所反映。物质的唯一特性是客观实在性。",
-    keywords: ["客观实在", "不依赖意识", "可被反映", "唯一特性"],
-    logicHint: "物质是第一性起点，意识、实践、规律、认识都要从这里展开。背的时候先记“客观实在”，再记“不依赖意识”和“可被反映”。",
-    chapterId: "c1",
-    importance: "必背",
-    examTypes: ["名词解释", "辨析题"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "consciousness",
-    term: "意识",
-    answer: "意识是物质世界长期发展的产物，是人脑的机能和属性，是人脑对物质世界的主观反映。意识内容具有客观性，形式具有主观性。",
-    keywords: ["物质世界产物", "人脑机能", "主观反映", "客观内容"],
-    logicHint: "它和物质是一对，不要单背。要和“物质第一性”一起记：内容来自客观世界，形式属于人的主观加工。",
-    chapterId: "c1",
-    importance: "高频",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF、重点笔记"
-  },
-  {
-    id: "subjective-agency",
-    term: "主观能动性",
-    answer: "主观能动性是人们认识世界和改造世界过程中有目的、有计划、积极主动的活动能力。正确发挥主观能动性必须以尊重客观规律为前提。",
-    keywords: ["目的性", "计划性", "主动性", "尊重规律"],
-    chapterId: "c1",
-    importance: "高频",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "practice",
-    term: "实践",
-    answer: "实践是人类有目的地探索和改造客观世界的能动的物质性活动，是认识的来源、动力、目的和检验标准。",
-    keywords: ["改造客观世界", "能动", "物质性活动", "认识基础"],
-    logicHint: "实践不是抽象口号，它是认识论的发动机。所有“为什么认识不同、为什么要检验、为什么要回到现实”都回到实践。",
-    chapterId: "c2",
-    importance: "必背",
-    examTypes: ["名词解释", "材料分析", "辨析题"],
-    sourceHint: "名词解释 PDF、2024 秋往年题"
-  },
-  {
-    id: "connection",
-    term: "联系",
-    answer: "联系是事物或现象之间以及事物内部各要素之间相互作用、相互影响和相互制约的关系。联系具有客观性、普遍性、多样性和条件性。",
-    keywords: ["相互作用", "相互影响", "相互制约", "客观普遍多样条件"],
-    chapterId: "c1",
-    importance: "高频",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF、重点笔记"
-  },
-  {
-    id: "development",
-    term: "发展",
-    answer: "发展是事物从低级向高级、从量变到质变的运动变化过程，其实质是新事物的产生和旧事物的灭亡。",
-    keywords: ["低级到高级", "量变到质变", "新事物产生", "旧事物灭亡"],
-    chapterId: "c1",
-    importance: "高频",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "contradiction-law",
-    term: "矛盾规律",
-    answer: "矛盾即事物内部或事物之间两个方面的对立统一。对立统一规律揭示事物发展的源泉和动力，是唯物辩证法的实质和核心。",
-    keywords: ["对立统一", "源泉和动力", "实质和核心", "普遍性特殊性"],
-    chapterId: "c1",
-    importance: "必背",
-    examTypes: ["名词解释", "材料分析", "辨析题"],
-    sourceHint: "2024 秋往年题、名词解释 PDF"
-  },
-  {
-    id: "unity-struggle",
-    term: "矛盾的同一性和斗争性",
-    answer: "同一性是矛盾双方相互依存、相互贯通并在一定条件下相互转化的属性；斗争性是矛盾双方相互排斥、相互分离的属性。二者共同推动事物发展。",
-    keywords: ["相互依存", "相互贯通", "相互排斥", "推动发展"],
-    chapterId: "c1",
-    importance: "必背",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "quantity-quality",
-    term: "量变与质变",
-    answer: "量变是事物数量增减和构成要素排列次序变化，是度范围内不显著的变化；质变是事物根本性质的变化，是由一种质态向另一种质态的飞跃。量变是质变的必要准备，质变是量变的必然结果。",
-    keywords: ["数量变化", "根本性质变化", "度", "必要准备和必然结果"],
-    chapterId: "c1",
-    importance: "高频",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "dialectical-negation",
-    term: "辩证否定观",
-    answer: "辩证否定是事物自身内在矛盾引起的自我否定，是发展环节和联系环节，是包含肯定的否定。其实质是扬弃，即既克服又保留。",
-    keywords: ["自我否定", "发展环节", "联系环节", "扬弃"],
-    chapterId: "c1",
-    importance: "高频",
-    examTypes: ["名词解释", "辨析题"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "perceptual-rational",
-    term: "感性认识与理性认识",
-    answer: "感性认识是认识的初级阶段，具有直接性和形象性，包括感觉、知觉、表象；理性认识是认识的高级阶段，具有间接性和抽象性，包括概念、判断、推理。二者在实践基础上辩证统一。",
-    keywords: ["初级阶段", "高级阶段", "直接形象", "间接抽象", "实践基础"],
-    chapterId: "c2",
-    importance: "高频",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF、2024 秋往年题"
-  },
-  {
-    id: "truth",
-    term: "真理",
-    answer: "真理是标志主观与客观相符合的哲学范畴，是人们对客观事物及其规律的正确反映。真理具有客观性，同时又有绝对性和相对性。",
-    keywords: ["主客观相符合", "正确反映", "客观性", "绝对性相对性"],
-    chapterId: "c2",
-    importance: "高频",
-    examTypes: ["名词解释", "辨析题"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "practice-truth-standard",
-    term: "实践是检验真理的唯一标准",
-    answer: "实践具有直接现实性，能够把主观认识同客观结果联系起来并加以对照，因此只有实践才能最终检验认识是否同客观实际相符合。",
-    keywords: ["直接现实性", "主观见之于客观", "最终检验", "客观实际"],
-    chapterId: "c2",
-    importance: "必背",
-    examTypes: ["材料分析", "辨析题"],
-    sourceHint: "教材第二章"
-  },
-  {
-    id: "seeking-truth",
-    term: "实事求是",
-    answer: "实事求是是马克思主义的精髓。“实事”就是客观存在的一切事物，“是”就是客观事物的内部联系即规律，“求”就是去研究。",
-    keywords: ["客观存在", "内部联系", "规律", "马克思主义精髓"],
-    chapterId: "c2",
-    importance: "高频",
-    examTypes: ["名词解释", "论述题"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "social-existence",
-    term: "社会存在",
-    answer: "社会存在是社会生活的物质方面，主要指物质生活资料的生产及生产方式，也包括地理环境和人口因素。其中生产方式是社会发展的决定力量。",
-    keywords: ["物质方面", "生产方式", "地理环境", "人口因素", "决定力量"],
-    chapterId: "c3",
-    importance: "高频",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "social-consciousness",
-    term: "社会意识",
-    answer: "社会意识是社会生活的精神方面，是社会存在的反映，包括社会心理和思想体系。社会意识具有相对独立性，并能反作用于社会存在。",
-    keywords: ["精神方面", "社会存在反映", "相对独立性", "反作用"],
-    chapterId: "c3",
-    importance: "高频",
-    examTypes: ["名词解释", "辨析题"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "productive-forces",
-    term: "生产力",
-    answer: "生产力是人类在生产实践中形成的改造和影响自然以适应社会需要的物质力量，由劳动者、劳动对象和劳动资料构成，生产工具是生产力发展水平的主要标志。",
-    keywords: ["改造自然", "劳动者", "劳动对象", "劳动资料", "生产工具"],
-    logicHint: "生产力是历史唯物主义的起点。它决定生产关系，也决定后面的经济基础和上层建筑怎么变。",
-    chapterId: "c3",
-    importance: "必背",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF、2024 秋往年题"
-  },
-  {
-    id: "relations-production",
-    term: "生产关系",
-    answer: "生产关系是人们在生产过程中形成的不以人的意志为转移的经济关系，包括生产资料所有制关系、生产中人与人的关系和产品分配关系，其中生产资料所有制关系是基础。",
-    keywords: ["经济关系", "生产资料所有制", "人与人关系", "产品分配", "基础"],
-    chapterId: "c3",
-    importance: "必背",
-    examTypes: ["名词解释"],
-    sourceHint: "2024 秋往年题、名词解释 PDF"
-  },
-  {
-    id: "economic-base",
-    term: "经济基础",
-    answer: "经济基础是由社会一定发展阶段的生产力所决定的生产关系的总和，占统治地位的生产关系决定经济基础的性质。",
-    keywords: ["生产关系总和", "生产力决定", "占统治地位", "性质"],
-    chapterId: "c3",
-    importance: "高频",
-    examTypes: ["名词解释", "辨析题"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "superstructure",
-    term: "上层建筑",
-    answer: "上层建筑是建立在一定经济基础之上的意识形态以及相应的制度、组织和设施，包括思想上层建筑和政治上层建筑。",
-    keywords: ["经济基础之上", "意识形态", "制度组织设施", "思想和政治上层建筑"],
-    chapterId: "c3",
-    importance: "必背",
-    examTypes: ["名词解释"],
-    sourceHint: "2024 秋往年题、名词解释 PDF"
-  },
-  {
-    id: "social-basic-contradictions",
-    term: "社会基本矛盾",
-    answer: "社会基本矛盾由生产力与生产关系、经济基础与上层建筑两对矛盾共同构成，决定社会发展的形式、内容和方向，是推动社会发展的根本动力。",
-    keywords: ["生产力生产关系", "经济基础上层建筑", "根本动力", "发展方向"],
-    chapterId: "c3",
-    importance: "必背",
-    examTypes: ["名词解释", "材料分析"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "people",
-    term: "人民群众",
-    answer: "人民群众在量上指大多数，在质上指对社会历史起推动作用的人们，是以劳动者为主体的大多数人。人民群众是历史的创造者。",
-    keywords: ["大多数", "推动历史", "劳动者主体", "历史创造者"],
-    chapterId: "c3",
-    importance: "高频",
-    examTypes: ["名词解释", "论述题"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "commodity",
-    term: "商品",
-    answer: "商品是用来交换的、能够满足人们某种需要的劳动产品，具有使用价值和价值两个因素，是使用价值和价值的矛盾统一体。",
-    keywords: ["交换", "劳动产品", "使用价值", "价值", "矛盾统一体"],
-    chapterId: "c4",
-    importance: "高频",
-    examTypes: ["名词解释"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "necessary-labor-time",
-    term: "社会必要劳动时间",
-    answer: "社会必要劳动时间是在现有社会正常生产条件下，在社会平均劳动熟练程度和劳动强度下制造某种使用价值所需要的劳动时间。商品价值量由社会必要劳动时间决定。",
-    keywords: ["正常生产条件", "平均熟练程度", "平均劳动强度", "决定价值量"],
-    chapterId: "c4",
-    importance: "必背",
-    examTypes: ["名词解释"],
-    sourceHint: "2024 秋往年题、教材第四章"
-  },
-  {
-    id: "value-law",
-    term: "价值规律",
-    answer: "价值规律是商品经济的基本规律，其基本内容是商品价值量由生产商品的社会必要劳动时间决定，商品交换以价值量为基础，按照等价交换原则进行。",
-    keywords: ["基本规律", "社会必要劳动时间", "价值量", "等价交换"],
-    chapterId: "c4",
-    importance: "必背",
-    examTypes: ["名词解释", "辨析题"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "labor-duality",
-    term: "劳动二重性",
-    answer: "生产商品的劳动一方面是具体劳动，形成商品的使用价值；另一方面是抽象劳动，形成商品的价值。劳动二重性决定商品二因素。",
-    keywords: ["具体劳动", "抽象劳动", "使用价值", "价值"],
-    chapterId: "c4",
-    importance: "高频",
-    examTypes: ["名词解释"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "surplus-value",
-    term: "剩余价值",
-    answer: "剩余价值是雇佣工人创造的、被资本家无偿占有的超过劳动力价值的那部分价值，是资本主义剥削关系的实质体现。",
-    keywords: ["雇佣工人创造", "无偿占有", "超过劳动力价值", "剥削实质"],
-    logicHint: "要和劳动力商品一起背：先有劳动力成为商品，才有资本家通过使用它去获得剩余价值。",
-    chapterId: "c4",
-    importance: "必背",
-    examTypes: ["名词解释"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "constant-variable-capital",
-    term: "不变资本与可变资本",
-    answer: "不变资本是以生产资料形态存在的资本，在生产过程中只转移原有价值；可变资本是用于购买劳动力的资本，能够带来剩余价值。",
-    keywords: ["生产资料", "转移原有价值", "购买劳动力", "带来剩余价值"],
-    chapterId: "c4",
-    importance: "高频",
-    examTypes: ["名词解释"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "capital-basic-contradiction",
-    term: "资本主义基本矛盾",
-    answer: "资本主义基本矛盾是生产资料资本主义私人占有和生产社会化之间的矛盾，这一矛盾集中表现为个别企业生产的有组织性和整个社会生产无政府状态之间的矛盾。",
-    keywords: ["私人占有", "生产社会化", "基本矛盾", "经济危机"],
-    chapterId: "c4",
-    importance: "高频",
-    examTypes: ["名词解释", "辨析题"],
-    sourceHint: "名词解释 PDF、教材第四章"
-  },
-  {
-    id: "monopoly",
-    term: "垄断",
-    answer: "垄断是少数资本主义大企业为了获得高额利润，通过相互协议或联合，对一个或几个部门商品的生产、销售和价格进行操纵和控制。",
-    keywords: ["少数大企业", "高额利润", "协议或联合", "操纵控制"],
-    chapterId: "c5",
-    importance: "必背",
-    examTypes: ["名词解释"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "financial-capital",
-    term: "金融资本",
-    answer: "金融资本是由工业垄断资本和银行垄断资本融合在一起形成的一种垄断资本。",
-    keywords: ["工业垄断资本", "银行垄断资本", "融合", "垄断资本"],
-    chapterId: "c5",
-    importance: "高频",
-    examTypes: ["名词解释"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "financial-oligarchy",
-    term: "金融寡头",
-    answer: "金融寡头是操纵国民经济命脉并在实际上控制国家政权的少数垄断资本家或垄断资本家集团。",
-    keywords: ["操纵经济命脉", "控制国家政权", "少数", "垄断资本家集团"],
-    chapterId: "c5",
-    importance: "高频",
-    examTypes: ["名词解释"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "monopoly-price",
-    term: "垄断价格",
-    answer: "垄断价格是垄断组织凭借垄断地位规定的、旨在保证最大限度利润的市场价格，通常由成本价格加垄断利润构成。",
-    keywords: ["垄断地位", "最大限度利润", "成本价格", "垄断利润"],
-    logicHint: "它不是普通市场价，而是垄断阶段追逐高额利润的结果。可和垄断、金融资本、金融寡头一起连背。",
-    chapterId: "c5",
-    importance: "必背",
-    examTypes: ["名词解释"],
-    sourceHint: "2024 秋往年题、教材第五章"
-  },
-  {
-    id: "state-monopoly-capitalism",
-    term: "国家垄断资本主义",
-    answer: "国家垄断资本主义是国家政权和私人垄断资本融合在一起的垄断资本主义，是垄断资本主义发展的重要形式。",
-    keywords: ["国家政权", "私人垄断资本", "融合", "垄断资本主义"],
-    chapterId: "c5",
-    importance: "高频",
-    examTypes: ["名词解释"],
-    sourceHint: "名词解释 PDF"
-  },
-  {
-    id: "economic-globalization",
-    term: "经济全球化",
-    answer: "经济全球化是世界经济活动超越国界，通过贸易、投资、金融、生产等活动在全球范围内展开，使各国经济相互依存、相互联系而形成的趋势。",
-    keywords: ["超越国界", "贸易投资金融生产", "相互依存", "全球趋势"],
-    chapterId: "c5",
-    importance: "理解",
-    examTypes: ["名词解释", "论述题"],
-    sourceHint: "名词解释 PDF"
-  }
+export const terms: TermCard[] = [
+  { id: "t101", type: "term", section: 3, category: "辩证法", title: "辩证否定观", content: "辩证否定观的基本内容是：第一，否定是事物的自我否定，是事物内部矛盾运动的结果。第二，否定是事物发展的环节，是旧事物向新事物的转变，是从旧质到新质的飞跃。只有经过否定，旧事物才能向新事物转变。第三，否定是新旧事物联系的环节，新事物孕育产生于旧事物，新旧事物是通过否定环节联系起来的。第四，辩证否定的实质是扬弃，即新事物对旧事物既批判又继承，既克服其消极因素又保留其积极因素。" },
+  { id: "t102", type: "term", section: 3, category: "唯物史观", title: "社会形态", content: "社会形态是关于社会运动的具体形式、发展阶段和不同质态的范畴，是同生产力发展一定阶段相适应的经济基础与上层建筑的统一体。社会形态包括社会的经济形态、政治形态和意识形态，是三者历史的、具体的统一。经济形态是社会形态的基础，生产资料所有制关系具有决定性的意义。" },
+  { id: "t103", type: "term", section: 3, category: "唯物史观", title: "意识形态", content: "意识形态又称为观念上层建筑，包括政治法律思想、道德、艺术、宗教、哲学等思想观点。意识形态是社会意识的重要组成部分，是反映社会经济关系、阶级关系的思想体系，属于上层建筑的重要组成部分，为特定的经济基础和统治阶级服务。" },
+  { id: "t104", type: "term", section: 3, category: "唯物史观", title: "唯物史观", content: "唯物史观即历史唯物主义，是马克思主义的两大发现之一。它揭示了人类社会发展的一般规律，认为社会存在决定社会意识，社会基本矛盾是社会发展的根本动力，人民群众是历史的创造者，科学地解决了社会历史观的基本问题。" },
+  { id: "t105", type: "term", section: 3, category: "唯物史观", title: "社会基本矛盾", content: "社会基本矛盾就是指贯穿社会发展过程始终，规定社会发展过程的基本性质和基本趋势，并对社会历史发展起根本推动作用的矛盾。生产力和生产关系、经济基础和上层建筑的矛盾是社会基本矛盾，这两对矛盾规定并反映了社会的基本结构的性质和基本面貌。" },
+  { id: "t106", type: "term", section: 3, category: "唯物史观", title: "生产关系", content: "生产关系是人们在物质生产过程中形成的不以人的意志为转移的经济关系。生产关系包括生产资料所有制关系、生产中人与人的关系和产品分配关系。在生产关系中，生产资料所有制关系是最基本的、具有决定意义的方面。" },
+  { id: "t107", type: "term", section: 3, category: "唯物史观", title: "上层建筑", content: "上层建筑是建立在一定经济基础之上的意识形态以及与之相应的制度、组织和设施。上层建筑由意识形态以及政治法律制度及设施和政治组织两部分构成。前者称为观念上层建筑，后者称为政治上层建筑，政治上层建筑居主导地位。" },
+  { id: "t108", type: "term", section: 3, category: "唯物史观", title: "物质世界的二重化", content: "物质世界的二重化是指物质世界在漫长的发展中分化出自然界和人类社会，以及主观世界和客观世界。一方面是从自然界中分化出人类社会，另一方面是从物质世界中分化出人的意识、主观世界。这两个分化都是在实践的基础上实现的。" },
+  { id: "t109", type: "term", section: 3, category: "政治经济学", title: "可变资本", content: "可变资本是用来购买劳动力的那部分资本。可变资本的价值在生产过程中不是被转移到新产品中去，而是由工人的劳动再生产出来。在生产过程中，工人所创造的新价值，不仅包括相当于劳动力价值的价值，而且还包括一定量的剩余价值。由于这一部分资本的价值不是不变的，而是一个可变的量，所以马克思把这一部分资本叫作可变资本。" },
+  { id: "t110", type: "term", section: 3, category: "政治经济学", title: "社会必要劳动时间", content: "社会必要劳动时间是在现有的社会正常的生产条件下，在社会平均的劳动熟练程度和劳动强度下制造某种使用价值所需要的劳动时间。社会必要劳动时间决定商品的价值量，它随着劳动生产率的变化而变化。劳动生产率越高，单位时间内生产的商品数量越多，生产每件商品所需要的社会必要劳动时间就越少，单位商品的价值量就越小，反之就越大。" },
+  { id: "t111", type: "term", section: 3, category: "政治经济学", title: "必要劳动时间", content: "必要劳动时间是指工人用于再生产自己劳动力价值的时间，即在工作日中用于补偿劳动力价值的时间。在必要劳动时间内，工人创造的价值补偿资本家支付的劳动力价值。与必要劳动时间相对的是剩余劳动时间，即工人在工作日中超出必要劳动时间、无偿地为资本家生产剩余价值的时间。" },
+  { id: "t112", type: "term", section: 3, category: "政治经济学", title: "剩余价值", content: "剩余价值是雇佣工人所创造的并被资本家无偿占有的超过劳动力价值的那部分价值，它是雇佣工人剩余劳动的凝结，体现了资本家与雇佣工人之间剥削与被剥削的关系。剩余价值是在资本主义的生产过程中生产出来的。" },
+  { id: "t113", type: "term", section: 3, category: "政治经济学", title: "资本总公式", content: "资本总公式是 G-W-G'，其中 G'=G+ΔG，ΔG 是运动过程中的价值增殖额，即剩余价值。资本总公式表明，货币在运动中发生了价值增殖，这与价值规律的等价交换要求相矛盾，这就是资本总公式的矛盾。解决这一矛盾的关键是劳动力成为商品。" },
+  { id: "t114", type: "term", section: 3, category: "政治经济学", title: "价值的两重性", content: "商品具有使用价值和价值两个因素或两种属性，是使用价值和价值的矛盾统一体。使用价值是指商品能满足人的某种需要的有用性，是商品的自然属性；价值是凝结在商品中的无差别的一般人类劳动，是商品所特有的社会属性。" },
+  { id: "t115", type: "term", section: 3, category: "政治经济学", title: "劳动的二重性", content: "生产商品的劳动具有二重性，即具体劳动和抽象劳动。具体劳动是指生产一定使用价值的具体形式的劳动，它形成商品的使用价值；抽象劳动是指撇开一切具体形式的、无差别的一般人类劳动，它形成商品的价值实体。劳动二重性是理解政治经济学的枢纽。" },
+  { id: "t116", type: "term", section: 3, category: "政治经济学", title: "价值规律", content: "价值规律是商品生产和商品交换的基本规律。其主要内容是：商品的价值量由生产商品的社会必要劳动时间决定，商品交换以价值量为基础，按照等价交换的原则进行。价值规律的表现形式是商品的价格围绕商品的价值自发波动。" },
+  { id: "t117", type: "term", section: 3, category: "政治经济学", title: "剩余价值规律", content: "剩余价值规律是资本主义的基本经济规律，其内容是：资本主义生产的目的和动机是追求尽可能多的剩余价值，达到这一目的的手段是不断扩大和加强对雇佣劳动的剥削。剩余价值规律决定着资本主义生产的实质、发展的一切主要方面和主要过程。" },
+  { id: "t118", type: "term", section: 3, category: "政治经济学", title: "商品拜物教", content: "商品拜物教是指在私有制商品经济条件下，人与人之间的社会关系被物与物之间的关系所掩盖，商品具有了一种神秘的力量，它支配着商品生产者的命运，从而使商品生产者对商品产生崇拜。" },
+  { id: "t119", type: "term", section: 3, category: "政治经济学", title: "垄断价格", content: "垄断价格是垄断组织在销售或购买商品时，凭借其垄断地位规定的、旨在保证获取最大限度利润的市场价格。垄断价格包括垄断高价和垄断低价两种形式。垄断价格的产生没有否定价值规律，它是价值规律在垄断资本主义阶段作用的具体体现。" },
+  { id: "t120", type: "term", section: 3, category: "政治经济学", title: "经济全球化", content: "经济全球化是指在生产不断发展、科技加速进步、社会分工和国际分工不断深化、生产的社会化和国际化程度不断提高的情况下，世界各国、各地区的经济活动越来越超出一国和地区的范围而相互联系、相互依赖的过程。" },
+  { id: "t121", type: "term", section: 3, category: "马克思主义", title: "马克思主义", content: "马克思主义是由马克思、恩格斯创立并为后继者所不断发展的科学理论体系，是关于自然、社会和人类思维发展一般规律的学说，是关于社会主义必然代替资本主义、最终实现共产主义的学说，是关于无产阶级解放、全人类解放和每个人自由而全面发展的学说，是无产阶级政党和社会主义国家的指导思想，是指引人民创造美好生活的行动指南。" },
+  { id: "t122", type: "term", section: 3, category: "马克思主义", title: "主体客体化", content: "主体客体化是指人通过实践使自己的本质力量作用于客体，使其按照主体的需要发生结构和功能上的变化，形成了世界上本来不存在的对象物。它是人的体力和智力的物化体现，是主体的本质力量通过实践活动积淀、凝聚和物化在客体中。" },
+  { id: "t123", type: "term", section: 3, category: "马克思主义", title: "价值观", content: "价值观是人们关于价值本质的认识以及对人和事物的评价标准、评价原则和评价方法的观点的体系。它与世界观和人生观是一致的，对人的行为起着规范和导向作用。马克思主义价值观以绝大多数人的利益为是非、善恶、美丑的评价标准。" },
+  { id: "t124", type: "term", section: 3, category: "马克思主义", title: "马克思主义中国化时代化", content: "马克思主义中国化时代化就是把马克思主义基本原理同中国具体实际相结合、同中华优秀传统文化相结合，运用马克思主义的立场、观点、方法研究和解决中国革命、建设、改革中的实际问题，使马克思主义在中国实现具体化、民族化，同时随着时代的发展不断丰富和发展。" },
+  { id: "t125", type: "term", section: 3, category: "马克思主义", title: "唯物主义", content: "唯物主义认为物质第一性、意识第二性，物质决定意识。马克思主义的唯物主义是辩证唯物主义，它既坚持唯物主义的基本立场，又承认意识对物质具有能动的反作用，实现了唯物论与辩证法的有机统一。" },
+  { id: "t126", type: "term", section: 3, category: "马克思主义", title: "意识观", content: "马克思主义意识观认为：意识是人脑的机能和属性，是客观世界的主观映象；意识不仅是自然界长期发展的产物，而且是社会历史发展的产物；意识对物质具有反作用，具有目的性、计划性、创造性，能够指导实践改造客观世界。" },
+  { id: "t127", type: "term", section: 3, category: "马克思主义", title: "科学实践观", content: "马克思主义科学实践观认为，实践是人类能动地改造世界的社会性的物质活动，具有客观实在性、自觉能动性和社会历史性三个基本特征。实践是认识的来源、动力、目的和检验认识真理性的唯一标准。科学实践观的创立实现了世界观和历史观的革命变革。" },
+  { id: "t128", type: "term", section: 3, category: "辩证法", title: "矛盾规律", content: "矛盾规律即对立统一规律，是唯物辩证法的实质和核心。它揭示了事物普遍联系的根本内容和变化发展的内在动力，从根本上回答了事物为什么会发展的问题。矛盾是反映事物内部和事物之间对立统一关系的哲学范畴，矛盾的同一性和斗争性相互联结、相辅相成。" },
+  { id: "t129", type: "term", section: 3, category: "辩证法", title: "系统性思维", content: "系统思维能力就是从事物相互联系的各个方面及其结构和功能进行系统思考的能力，就是全面系统地分析和处理问题的能力。提高系统思维能力，就是要坚持系统观念，用系统的思维认识事物、把握事物，处理好整体与部分、结构与功能、系统与环境的关系，优化系统结构，实现系统整体功能的最大化。系统观念是唯物辩证法普遍联系观点的应有之义。" }
 ];
 
-export const pastPapers: PastPaper[] = [
-  {
-    id: "2024-autumn",
-    title: "2024 秋季回忆版",
-    terms: ["矛盾规律", "生产关系", "上层建筑", "社会必要劳动时间", "垄断价格"],
-    analysis: [
-      "认识的不同体现的认识论原理",
-      "实践和认识的辩证关系",
-      "结合唯物辩证法谈人与自然的辩证关系",
-      "结合生产力概念谈绿色发展和新质生产力"
-    ],
-    essay: ["结合西北工业大学总师育人文化和专业，谈如何践行马克思主义"],
-    relatedCardIds: [
-      "contradiction-law",
-      "relations-production",
-      "superstructure",
-      "necessary-labor-time",
-      "monopoly-price",
-      "practice",
-      "perceptual-rational",
-      "productive-forces"
-    ]
-  }
-];
-
-export const examStrategy = [
-  "校内考试按现有 README 经验：前五章优先，科学社会主义部分暂不作为首版主线。",
-  "名词解释优先背关键词，尤其是规律类、关系类、政治经济学概念。",
-  "材料分析和辨析题集中在导论到第三章，答题要先定位章节，再用原理解释材料。",
-  "第四、第五章以名词解释为主，定义要短准，写出决定性关键词。",
-  "论述题注意从原理落到现实做法，可联系总师育人文化、专业学习和实践。"
-];
-
-export const conceptLinks: ConceptLink[] = [
-  {
-    id: "matter-consciousness",
-    from: "物质",
-    relation: "决定并可被反映",
-    to: "意识",
-    explanation: "先记住本体论底座：物质第一性，意识第二性；再记意识不是照相机，而是人脑对客观世界的能动反映。",
-    cardIds: ["matter", "consciousness", "subjective-agency"]
-  },
-  {
-    id: "agency-law",
-    from: "主观能动性",
-    relation: "必须以尊重",
-    to: "客观规律",
-    explanation: "材料题里凡是谈“想干、会干、怎么干”，都要写尊重客观规律和发挥主观能动性的统一。",
-    cardIds: ["subjective-agency", "connection", "development"]
-  },
-  {
-    id: "connection-development-contradiction",
-    from: "联系和发展",
-    relation: "展开为",
-    to: "矛盾规律",
-    explanation: "联系说明世界不是孤立的，发展说明世界不是静止的，矛盾规律回答为什么发展、靠什么发展。",
-    cardIds: ["connection", "development", "contradiction-law", "unity-struggle"]
-  },
-  {
-    id: "quantity-quality-negation",
-    from: "量变质变",
-    relation: "配合",
-    to: "辩证否定",
-    explanation: "量变质变解释发展如何发生飞跃；辩证否定解释新旧事物如何既继承又超越。两个一起背，适合创新、改革、成长类材料。",
-    cardIds: ["quantity-quality", "dialectical-negation"]
-  },
-  {
-    id: "practice-knowledge-truth",
-    from: "实践",
-    relation: "产生、检验并推动",
-    to: "认识和真理",
-    explanation: "认识论主线是“实践到认识，再回到实践”。看到不同认识、反复试错、检验标准，就走这条线。",
-    cardIds: ["practice", "perceptual-rational", "truth", "practice-truth-standard"]
-  },
-  {
-    id: "truth-value-innovation",
-    from: "真理",
-    relation: "统一于",
-    to: "价值和实践创新",
-    explanation: "真理解决是否符合客观规律，价值解决是否满足主体需要；二者统一，才能把认识转化为改造世界的行动。",
-    cardIds: ["truth", "seeking-truth", "practice-truth-standard"]
-  },
-  {
-    id: "social-existence-consciousness",
-    from: "社会存在",
-    relation: "决定",
-    to: "社会意识",
-    explanation: "历史唯物主义的入口：社会生活的物质方面决定精神方面，社会意识又有相对独立性并反作用于社会存在。",
-    cardIds: ["social-existence", "social-consciousness"]
-  },
-  {
-    id: "productive-relations",
-    from: "生产力",
-    relation: "决定",
-    to: "生产关系",
-    explanation: "生产力回答“人改造自然的能力到哪了”，生产关系回答“人在生产中怎么结成关系”。前者最终决定后者，后者反作用于前者。",
-    cardIds: ["productive-forces", "relations-production", "social-basic-contradictions"]
-  },
-  {
-    id: "base-superstructure",
-    from: "经济基础",
-    relation: "决定",
-    to: "上层建筑",
-    explanation: "经济基础是生产关系总和，上层建筑是制度和观念。判断社会制度、改革、治理问题时常用这组关系。",
-    cardIds: ["economic-base", "superstructure", "social-basic-contradictions"]
-  },
-  {
-    id: "commodity-value-law",
-    from: "商品二因素",
-    relation: "通过劳动二重性说明",
-    to: "价值规律",
-    explanation: "政经第一条线：商品有使用价值和价值，劳动有具体劳动和抽象劳动，价值量由社会必要劳动时间决定，交换遵循价值规律。",
-    cardIds: ["commodity", "labor-duality", "necessary-labor-time", "value-law"]
-  },
-  {
-    id: "labor-surplus-capital",
-    from: "劳动力成为商品",
-    relation: "产生",
-    to: "剩余价值",
-    explanation: "资本主义经济制度的关键不是普通买卖，而是劳动力商品的特殊使用价值能够创造超过自身价值的新价值。",
-    cardIds: ["surplus-value", "constant-variable-capital", "capital-basic-contradiction"]
-  },
-  {
-    id: "monopoly-chain",
-    from: "垄断",
-    relation: "发展出",
-    to: "金融资本、金融寡头和垄断价格",
-    explanation: "第五章按“自由竞争到垄断”背：垄断组织追求垄断利润，借金融资本和金融寡头强化控制，并通过垄断价格实现高额利润。",
-    cardIds: ["monopoly", "financial-capital", "financial-oligarchy", "monopoly-price", "state-monopoly-capitalism"]
-  }
-];
-
-export const memoryRoutes: MemoryRoute[] = [
-  {
-    id: "philosophy-mainline",
-    title: "哲学总线：世界是什么、怎么变、怎么做",
-    chapterIds: ["c1", "c2", "c3"],
-    scenario: "适合材料分析、辨析题和大论述的万能定位。",
-    steps: [
-      "先用物质和意识确认立场：坚持世界物质统一性。",
-      "再用联系、发展、矛盾说明材料中的变化动力。",
-      "然后用实践和认识说明人如何把握规律、检验认识。",
-      "最后落到社会历史：生产力、生产关系、人民群众和现实行动。"
-    ],
-    cardIds: ["matter", "consciousness", "connection", "development", "contradiction-law", "practice", "truth", "productive-forces", "people"]
-  },
-  {
-    id: "dialectics-answer-line",
-    title: "唯物辩证法答题线：联系-发展-矛盾-方法论",
-    chapterIds: ["c1"],
-    scenario: "适合人与自然、科技创新、绿色发展、专业成长类材料。",
-    steps: [
-      "联系：对象之间相互影响，不能孤立看。",
-      "发展：事物处于变化过程，要看趋势和新事物。",
-      "矛盾：抓主要矛盾和矛盾主要方面，说明动力。",
-      "方法论：坚持全面、联系、发展、具体问题具体分析。"
-    ],
-    cardIds: ["connection", "development", "contradiction-law", "unity-struggle", "quantity-quality", "dialectical-negation"]
-  },
-  {
-    id: "epistemology-answer-line",
-    title: "认识论答题线：实践-认识-真理-再实践",
-    chapterIds: ["c2"],
-    scenario: "适合“认识不同”“反复探索”“如何检验正确性”的材料。",
-    steps: [
-      "实践是认识来源、动力、目的和检验标准。",
-      "认识从感性到理性，并在实践中不断深化。",
-      "真理具有客观性，也有绝对性和相对性。",
-      "把正确认识回到实践，做到实事求是和守正创新。"
-    ],
-    cardIds: ["practice", "perceptual-rational", "truth", "practice-truth-standard", "seeking-truth"]
-  },
-  {
-    id: "historical-materialism-line",
-    title: "历史唯物主义线：社会存在-基本矛盾-人民群众",
-    chapterIds: ["c3"],
-    scenario: "适合社会发展、改革、科技、群众路线和现实治理类题。",
-    steps: [
-      "社会存在决定社会意识，生产方式是社会发展的决定力量。",
-      "生产力和生产关系、经济基础和上层建筑构成社会基本矛盾。",
-      "社会基本矛盾推动历史发展，改革是解决矛盾的重要方式。",
-      "人民群众是历史创造者，行动上坚持群众观点。"
-    ],
-    cardIds: ["social-existence", "social-consciousness", "productive-forces", "relations-production", "economic-base", "superstructure", "social-basic-contradictions", "people"]
-  },
-  {
-    id: "political-economy-line",
-    title: "政经记忆线：商品-价值-剩余价值-垄断",
-    chapterIds: ["c4", "c5"],
-    scenario: "适合第四、第五章名词解释连背。",
-    steps: [
-      "商品有使用价值和价值，劳动二重性解释商品二因素。",
-      "社会必要劳动时间决定价值量，价值规律支配商品交换。",
-      "劳动力成为商品后，资本通过可变资本获得剩余价值。",
-      "资本主义基本矛盾发展到垄断阶段，出现金融资本、金融寡头和垄断价格。"
-    ],
-    cardIds: ["commodity", "labor-duality", "necessary-labor-time", "value-law", "surplus-value", "constant-variable-capital", "capital-basic-contradiction", "monopoly", "monopoly-price"]
-  }
-];
-
-export const answerPatterns: AnswerPattern[] = [
-  {
-    id: "definition",
-    title: "名词解释三句法",
-    useFor: "六选四名词解释",
-    structure: ["第一句写属概念：它是什么范畴/规律/关系。", "第二句写核心关键词：构成、特征、决定关系。", "第三句写作用或地位：为什么重要。"],
-    exampleCards: ["contradiction-law", "relations-production", "superstructure", "monopoly-price"]
-  },
-  {
-    id: "material",
-    title: "材料分析四步法",
-    useFor: "哲学和认识论材料题",
-    structure: ["定位：材料对应哪一章哪一组关系。", "原理：写出核心概念和辩证关系。", "解释：把材料关键词嵌入原理。", "方法论：落到应该如何认识和实践。"],
-    exampleCards: ["connection", "development", "practice", "productive-forces"]
-  },
-  {
-    id: "essay",
-    title: "论述题推进法",
-    useFor: "结合现实、专业、总师文化的大题",
-    structure: ["先表态：坚持马克思主义立场观点方法。", "再展开：用实践、矛盾、人民群众或生产力逻辑分析。", "再结合：联系专业学习、工程实践、时代使命。", "最后落地：写具体行动，如调查研究、守正创新、服务人民。"],
-    exampleCards: ["marxism", "practice", "contradiction-law", "people"]
-  }
-];
+export const allCards: StudyCard[] = [...principles, ...terms];
