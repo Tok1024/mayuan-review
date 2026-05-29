@@ -1,5 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
+  ArrowLeft,
+  ArrowRight,
   BookOpen,
   CheckCircle2,
   CircleHelp,
@@ -51,7 +53,8 @@ export function App() {
   const [selectedSection, setSelectedSection] = useState<SectionId | "all">("all");
   const [mode, setMode] = useState<Mode>("all");
   const [query, setQuery] = useState("");
-  const [flippedIds, setFlippedIds] = useState<Record<string, boolean>>({});
+  const [flipped, setFlipped] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [randomDeck, setRandomDeck] = useState<StudyCard[] | null>(null);
 
   const { progress, setStatus, resetProgress, stats } = useReviewProgress(allCards.map((card) => card.id));
@@ -72,11 +75,21 @@ export function App() {
 
   const masteredCount = stats.counts.mastered;
   const achievement = getAchievement(masteredCount, stats.total);
+  const activeCard = currentIndex < visibleCards.length ? visibleCards[currentIndex] : undefined;
+  const deckDone = visibleCards.length > 0 && currentIndex >= visibleCards.length;
+  const deckPosition = activeCard ? currentIndex + 1 : visibleCards.length;
+  const deckProgress = visibleCards.length === 0 ? 0 : Math.round((Math.min(currentIndex, visibleCards.length) / visibleCards.length) * 100);
+
+  useEffect(() => {
+    setCurrentIndex((index) => Math.min(index, visibleCards.length));
+    setFlipped(false);
+  }, [visibleCards.length]);
 
   const chooseSection = (section: SectionId | "all") => {
     setSelectedSection(section);
     setRandomDeck(null);
-    setFlippedIds({});
+    setCurrentIndex(0);
+    setFlipped(false);
   };
 
   const startRandomReview = () => {
@@ -84,7 +97,8 @@ export function App() {
     setRandomDeck(makeRandomDeck(pool.length > 0 ? pool : allCards));
     setMode("review");
     setSelectedSection("all");
-    setFlippedIds({});
+    setCurrentIndex(0);
+    setFlipped(false);
   };
 
   const showAllCards = () => {
@@ -92,19 +106,33 @@ export function App() {
     setMode("all");
     setSelectedSection("all");
     setQuery("");
-    setFlippedIds({});
+    setCurrentIndex(0);
+    setFlipped(false);
   };
 
   const markCard = (cardId: string, status: CardStatus) => {
     setStatus(cardId, status);
-    setFlippedIds((current) => ({ ...current, [cardId]: false }));
+    setFlipped(false);
+    const shouldStayOnIndex = mode === "review" && !randomDeck && status === "mastered";
+    setCurrentIndex((index) => Math.min(index + (shouldStayOnIndex ? 0 : 1), visibleCards.length));
+  };
+
+  const goPrevious = () => {
+    setCurrentIndex((index) => Math.max(index - 1, 0));
+    setFlipped(false);
+  };
+
+  const goNext = () => {
+    setCurrentIndex((index) => Math.min(index + 1, visibleCards.length));
+    setFlipped(false);
   };
 
   const handleReset = () => {
     if (window.confirm("确定清空所有复习记录？")) {
       resetProgress();
       setRandomDeck(null);
-      setFlippedIds({});
+      setCurrentIndex(0);
+      setFlipped(false);
     }
   };
 
@@ -121,10 +149,10 @@ export function App() {
 
         <div className="topbarRight">
           <div className="modeSwitch" aria-label="复习模式">
-            <button className={mode === "all" ? "active" : ""} onClick={() => { setMode("all"); setRandomDeck(null); }}>
+            <button className={mode === "all" ? "active" : ""} onClick={() => { setMode("all"); setRandomDeck(null); setCurrentIndex(0); setFlipped(false); }}>
               全部
             </button>
-            <button className={mode === "review" ? "active" : ""} onClick={() => { setMode("review"); setRandomDeck(null); }}>
+            <button className={mode === "review" ? "active" : ""} onClick={() => { setMode("review"); setRandomDeck(null); setCurrentIndex(0); setFlipped(false); }}>
               未掌握
             </button>
           </div>
@@ -138,7 +166,7 @@ export function App() {
         <aside className="sidebar">
           <div className="searchBox">
             <Search size={18} />
-            <input value={query} onChange={(event) => { setQuery(event.target.value); setRandomDeck(null); }} placeholder="搜索：矛盾、剩余价值、实践..." />
+            <input value={query} onChange={(event) => { setQuery(event.target.value); setRandomDeck(null); setCurrentIndex(0); setFlipped(false); }} placeholder="搜索：矛盾、剩余价值、实践..." />
           </div>
 
           <div className="sectionList">
@@ -178,8 +206,8 @@ export function App() {
           <div className="summaryBand">
             <div>
               <p className="eyebrow">{randomDeck ? "随机复习" : selectedSection === "all" ? "全部知识" : getSectionTitle(selectedSection)}</p>
-              <h2>{randomDeck ? `今日抽卡 ${visibleCards.length} 张` : "把概念背准，把原理用活"}</h2>
-              <p>正面先回忆，背面看标准表达；每张卡标记“不会 / 模糊 / 掌握”，进度只保存在本机浏览器。</p>
+              <h2>{randomDeck ? `今日过卡 ${visibleCards.length} 张` : "一张一张背，过卡更专注"}</h2>
+              <p>先看正面主动回忆，再翻面核对标准表达；标记“不会 / 模糊 / 掌握”后自动进入下一张。</p>
             </div>
             <div className="progressCard">
               <div className="progressTop">
@@ -208,24 +236,54 @@ export function App() {
             </div>
           )}
 
-          <div className="cardGrid">
+          <div className="reviewStage">
             {visibleCards.length === 0 ? (
               <div className="emptyState">
                 <GraduationCap size={34} />
                 <h3>没有匹配的卡片</h3>
                 <p>换个关键词，或切回全部卡片。</p>
               </div>
+            ) : deckDone ? (
+              <div className="completePanel">
+                <CheckCircle2 size={42} />
+                <h3>这一组刷完了</h3>
+                <p>已经完成 {visibleCards.length} 张。可以回看上一张，或重新随机一组继续背。</p>
+                <div className="completeActions">
+                  <button className="navButton" onClick={goPrevious}><ArrowLeft size={17} />回看最后一张</button>
+                  <button className="primaryButton" onClick={startRandomReview}><Shuffle size={17} />再随机一组</button>
+                </div>
+              </div>
             ) : (
-              visibleCards.map((card) => (
-                <FlashCard
-                  key={card.id}
-                  card={card}
-                  flipped={!!flippedIds[card.id]}
-                  status={progress[card.id]?.status ?? "unknown"}
-                  onFlip={() => setFlippedIds((current) => ({ ...current, [card.id]: !current[card.id] }))}
-                  onMark={(status) => markCard(card.id, status)}
-                />
-              ))
+              <>
+                <div className="deckToolbar">
+                  <button className="navButton" onClick={goPrevious} disabled={currentIndex === 0}>
+                    <ArrowLeft size={17} />
+                    上一张
+                  </button>
+                  <div className="deckCounter">
+                    <strong>{deckPosition}</strong>
+                    <span>/ {visibleCards.length}</span>
+                    <div className="deckTrack"><div style={{ width: `${deckProgress}%` }} /></div>
+                  </div>
+                  <button className="navButton" onClick={goNext}>
+                    下一张
+                    <ArrowRight size={17} />
+                  </button>
+                </div>
+
+                {activeCard && (
+                  <div className="singleCardWrap">
+                    <FlashCard
+                      key={activeCard.id}
+                      card={activeCard}
+                      flipped={flipped}
+                      status={progress[activeCard.id]?.status ?? "unknown"}
+                      onFlip={() => setFlipped((current) => !current)}
+                      onMark={(status) => markCard(activeCard.id, status)}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </div>
         </section>

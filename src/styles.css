@@ -407,16 +407,96 @@ button {
   font-weight: 800;
 }
 
-.cardGrid {
+.reviewStage {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
   gap: 1rem;
+}
+
+.deckToolbar {
+  display: grid;
+  grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr) minmax(7rem, 10rem);
+  align-items: center;
+  gap: 0.85rem;
+  width: min(46rem, 100%);
+  margin: 0 auto;
+}
+
+.navButton,
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.85rem;
+  border: 0;
+  border-radius: 0.9rem;
+  font-weight: 800;
+}
+
+.navButton {
+  color: #334155;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+
+.navButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.primaryButton {
+  color: white;
+  background: linear-gradient(135deg, #1f5eff, #7c3aed);
+  padding: 0 1rem;
+}
+
+.deckCounter {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05);
+}
+
+.deckCounter strong {
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.deckCounter span {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.deckTrack {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+
+.deckTrack div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #1f5eff, #34d399);
+  transition: width 0.22s ease;
+}
+
+.singleCardWrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .flashCard {
   display: flex;
   flex-direction: column;
-  min-height: 28.5rem;
+  width: min(46rem, 100%);
+  min-height: 34rem;
   border-radius: 1.2rem;
   overflow: hidden;
 }
@@ -424,7 +504,7 @@ button {
 .cardPlane {
   position: relative;
   flex: 1;
-  min-height: 23rem;
+  min-height: 28rem;
   border: 0;
   padding: 0;
   background: transparent;
@@ -437,7 +517,7 @@ button {
   inset: 0;
   display: flex;
   flex-direction: column;
-  padding: 1.15rem;
+  padding: clamp(1.2rem, 3vw, 1.65rem);
   backface-visibility: hidden;
   transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -512,9 +592,9 @@ button {
 }
 
 .cardFace h3 {
-  margin: 1.4rem 0 0;
+  margin: 1.7rem 0 0;
   color: #0f172a;
-  font-size: clamp(1.28rem, 3vw, 1.7rem);
+  font-size: clamp(1.75rem, 4vw, 2.55rem);
   line-height: 1.35;
 }
 
@@ -537,6 +617,7 @@ button {
   line-height: 1.7;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
+  font-size: 1.05rem;
 }
 
 .cardFace small {
@@ -551,7 +632,7 @@ button {
 }
 
 .answerBlock {
-  padding: 0.9rem;
+  padding: 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.95rem;
   background: white;
@@ -559,14 +640,49 @@ button {
 
 .answerBlock h4 {
   margin: 0 0 0.45rem;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 .answerBlock p {
   margin: 0;
   color: #334155;
-  line-height: 1.75;
+  line-height: 1.82;
   white-space: pre-line;
+}
+
+.completePanel {
+  display: grid;
+  place-items: center;
+  width: min(46rem, 100%);
+  min-height: 24rem;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  border-radius: 1.25rem;
+  color: #047857;
+  background: linear-gradient(180deg, #ffffff, #ecfdf5);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.07);
+  text-align: center;
+}
+
+.completePanel h3 {
+  margin: 0.75rem 0 0;
+  color: #0f172a;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+}
+
+.completePanel p {
+  max-width: 28rem;
+  margin: 0.65rem 0 1.15rem;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.completeActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
 .answerBlock.green {
@@ -691,12 +807,31 @@ button {
     height: 2.35rem;
   }
 
-  .cardGrid {
-    grid-template-columns: 1fr;
+  .deckToolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .deckCounter {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .deckToolbar .navButton:first-child {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .deckToolbar .navButton:last-child {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .flashCard {
-    min-height: 29.5rem;
+    min-height: 32rem;
+  }
+
+  .cardPlane {
+    min-height: 24.5rem;
   }
 
   .cardActions {
