@@ -347,7 +347,7 @@ function FlashCard({
           ) : (
             <div className="answerStack">
               <AnswerBlock title="定义" body={card.content} tone="slate" />
-              <AnswerBlock title="理解线索" body={`${card.category}模块：先定位概念所属关系，再背定义中的对象、性质、作用。`} tone="blue" />
+              <AnswerBlock title="记忆链" body={card.memoryChain} tone="blue" />
             </div>
           )}
         </div>
